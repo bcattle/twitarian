@@ -33,7 +33,7 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
 .idea
-.twitter_credentials
 *.csv
 venv
