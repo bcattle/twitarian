@@ -37,3 +37,5 @@ nosetests.xml
 .idea
 *.csv
 venv
+.twitter_credentials
+.twitter_credentials*

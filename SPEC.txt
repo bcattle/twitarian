@@ -1,9 +1,13 @@
 Ok, Here is what I want to measure: (the first 3 come from this site, in case it helps: http://blog.programmableweb.com/2012/07/31/twitter-api-best-practices-follower-quality-vs-quantity/)
 
 Unique mentioners. This is done with a SQL query that finds the DISTINCT screen names among the tweets with @mentions of your account.
+
 Unique retweeters. This is also done with a DISTINCT SQL query that looks at all the screen names that have done a retweet of your account.
+
 Average retweets per tweet. Retweets are the closest thing on Twitter to a vote of approval. By collecting the total number of retweets each tweet receives, and then averaging that over time, you can see if your message is resonating
+
 Engagement rate: total #mentions, favorites, and re-tweets per quarter/total # tweets per quarter
+
 Follower growth: We can already measure this quarterly, but I'd like to look more granularly at the rate. Would be great if there was a way to pull my follower # after each tweet to look at the change to conjecture which topics garnered spikes in followers. As we discussed, rollups by day would probably be the most meaningful, but I can bundle in Excel.
 
 So I think what the spreadsheet would need that it currently lacks is:
