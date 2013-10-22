@@ -3,9 +3,9 @@
 __version__ = '0.2.0'
 
 import os
-from twitter import Twitter, OAuth, oauth_dance, read_token_file
 from pytz import UTC
-from models import TweetList
+from twitter import Twitter, OAuth, oauth_dance, read_token_file
+from tweetlist import TweetList
 from ux import write_and_flush, get_screenname, get_start_date, \
     prompt_to_open_file, print_copyright
 from output import save_to_csv, save_to_excel
