@@ -43,7 +43,7 @@ write_and_flush('done\n')
 # This isn't working for some reason. It's returning
 # the same two results over and over again.
 # However, the real search only returns 10 results, Oct-July
-# so it's not that important. 
+# so it's not that important.
 
 #write_and_flush('Pulling retweets...')
 #retweets = TweetList.pull_manual_retweets(t, TWITTER_ACCOUNT, START_DATE)
@@ -69,7 +69,7 @@ mentions.save_into_worksheet(ws2)
 
 # Third sheet, retweets
 ws3 = wb.create_sheet(title='Retweets')
-retweets.save_into_worksheet(ws3)
+#retweets.save_into_worksheet(ws3)
 
 # Save the file
 wb.save('%s.xlsx' % OUTPUT_FILENAME)
