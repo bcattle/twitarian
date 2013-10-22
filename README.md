@@ -33,6 +33,12 @@ Go back to the command prompt and type this code in.
 
 The script should run, and you should see
 
+![Screenshot: Console after run](https://raw.github.com/bcattle/twitarian/master/img/twitarian4.png)
 
 To open the file in Excel, press <kbd>Enter</kbd>, otherwise press any other key to quit.
 
+## Uh oh, something went wrong
+
+You may get the bogus error that "MSVCR90.dll is Missing or Not Found". If you do, to fix the twin issues of being both
+  "missing" and "not found", you need to run a small piece of software that Microsoft wouldn't let us include with this
+   package. Download and run the small installer [here](http://www.microsoft.com/en-us/download/details.aspx?id=29).

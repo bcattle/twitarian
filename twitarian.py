@@ -83,14 +83,16 @@ print '\n\t%s\n' % filename
 # If we're in Windows, offer to open the file in Excel
 if os.name == 'nt':
 
-    print '\n Press <enter> to open this file in Excel,'
+    print '\nPress <enter> to open this file in Excel,'
     print 'otherwise press any other key to quit.'
 
     import msvcrt
     c = msvcrt.getch()
     if c == '\r':
         # Open in excel
-        os.system('start excel.exe "%s\\%s"' % (sys.path[0], filename))
+        #os.system('start "%s\\%s"' % (sys.path[0], filename))
+		from subprocess import Popen
+		p = Popen(filename, shell=True)
 
 else:
     raw_input('Press any key to continue')
