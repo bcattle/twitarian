@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-import csv, collections
+import csv, collections, datetime
 from email.utils import parsedate_tz
 from pytz import UTC
-from settings import *
+#from settings import *
+from ux import get_utc_offset
 from twitter import TwitterHTTPError
 
 
@@ -14,7 +15,6 @@ class BaseTweet(object):
     def __repr__(self):
         # return '<Tweet "%s">' % self.text[:40].encode('ascii', 'replace')
         return '<%s "%s">' % (self.__class__.__name__, self.text[:40].encode('ascii', 'replace'))
-
 
     def _created_at_to_datetime(self, created_at):
         """
@@ -91,8 +91,9 @@ class TweetList(list):
     Holds both tweets *and* mentions (which are also tweets)
     """
 
-    def __init__(self, raw_tweets, tweet_klass):
+    def __init__(self, name, raw_tweets, tweet_klass):
         super(TweetList, self).__init__()
+        self.name = name.capitalize()
         for raw_tweet in raw_tweets:
             self.append(tweet_klass(raw_tweet))
         self.tweets_by_day = None
@@ -136,7 +137,7 @@ class TweetList(list):
             else:
                 break
 
-        tweet_list = TweetList(raw_tweets, Tweet)
+        tweet_list = TweetList(name='Tweets', raw_tweets=raw_tweets, tweet_klass=Tweet)
         return tweet_list
 
 
@@ -169,7 +170,7 @@ class TweetList(list):
             else:
                 break
 
-        mention_list = TweetList(raw_mentions, Mention)
+        mention_list = TweetList(name='Mentions', raw_tweets=raw_mentions, tweet_klass=Mention)
         return mention_list
 
 
@@ -179,6 +180,9 @@ class TweetList(list):
         Pulls "manual retweets" = those specified like "RT @comebody"
         The theory is that these aren't included in the official
         Twitter-returned "retweet count"
+
+        This function isn't that useful, because the search results are sparse
+        Better data is obtained by filtering the "mentions" by "RT @username"
         """
         last_id = None
         raw_retweets = []
@@ -197,17 +201,11 @@ class TweetList(list):
             try:
                 new_raw_retweets = twitter.search.tweets(**params)['statuses']         # <----
 
-                import ipdb
-                ipdb.set_trace()
-
             except TwitterHTTPError, e:
                 print 'Twitter returned an error, this probably means we were rate-limited.'
                 print '\tThe error was: %s' % e.response_data
                 print '\tcontinuing with the data we have...'
                 break
-
-            #import ipdb
-            #ipdb.set_trace()
 
             if not new_raw_retweets:
                 break
@@ -227,12 +225,12 @@ class TweetList(list):
         return mention_list
 
 
-    def save_output_file(self, file_object):
+    def save_output_file(self, username, file_object):
         """
         Saves to a flat CSV file, one table after the other
         """
         writer = csv.writer(file_object)
-        writer.writerow(['Tweets/mentions for @%s' % TWITTER_ACCOUNT])
+        writer.writerow(['Tweets/mentions for @%s' % username])
         writer.writerow([])
         writer.writerow(self[0].to_dict().keys())
         for tweet in self:

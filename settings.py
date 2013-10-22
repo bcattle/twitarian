@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-import datetime
+#import datetime
 #from pytz import timezone
-from pytz import UTC
+#from pytz import UTC
 
-VERSION = '0.2.0'
+#VERSION = '0.2.0'
 
 ## Settings
 
