@@ -2,6 +2,7 @@ import sys
 import os
 import datetime
 
+
 def write_and_flush(s):
     sys.stdout.write(s)
     sys.stdout.flush()
@@ -19,7 +20,8 @@ def get_screenname():
     returns it as a string
     """
     while True:
-        twitter_account = raw_input('Please enter your twitter username without the "@" sign: ')
+        twitter_account = raw_input('Please enter your twitter username '
+                                    'without the "@" sign: ')
         if twitter_account and twitter_account.strip()[0] != '@':
             break
     return twitter_account.strip()
@@ -36,11 +38,13 @@ def get_start_date():
     ]
 
     # What was the start date of the most recently ended quarter?
-    last_qtr = filter(lambda x: x < datetime.date.today(), quarter_start_dates)[-1]
+    last_qtr = filter(lambda x: x < datetime.date.today(),
+                      quarter_start_dates)[-1]
 
     # Allow the user to enter a different date, if desired
     print 'How far back do you want to go?'
-    print 'Press <enter> for the last quarter, which started on %s' % last_qtr.strftime('%B %d')
+    print 'Press <enter> for the last quarter, which started on %s' \
+          % last_qtr.strftime('%B %d')
     print 'Or enter a new date as [YYYY-MM-DD]'
 
     while True:
@@ -48,7 +52,9 @@ def get_start_date():
 
         if not new_date:
             # Accept the default
-            start_date = datetime.datetime.combine(last_qtr, datetime.datetime.min.time())
+            start_date = datetime.datetime.combine(
+                last_qtr, datetime.datetime.min.time()
+            )
             break
         else:
             # Try to parse the input
@@ -57,22 +63,25 @@ def get_start_date():
                 # It worked
                 break
             except ValueError:
-                print 'Sorry, couldn\'t understand the date "%s". Try again as [YYYY-MM-DD]' % new_date
+                print 'Sorry, couldn\'t understand the date "%s". ' \
+                      'Try again as [YYYY-MM-DD]' % new_date
 
     return start_date
 
 
-
-def get_utc_offset():
+def get_utc_offset_hours():
     """
     We want to show the user times in their local timezone,
     Twitter returns UTC - figure out what their offset is to this
     """
-    utcOffset_min = int(round((datetime.now() - datetime.utcnow()).total_seconds())) / 60   # round for taking time twice
-    utcOffset_h = utcOffset_min / 60
-    assert(utcOffset_min == utcOffset_h * 60)   # we do not handle 1/2 h timezone offsets
+    utc_offset = datetime.datetime.now() - datetime.datetime.tcnow()
+    utc_offset_minutes = int(round(utc_offset.total_seconds())) / 60
+    utc_offset_hours = utc_offset_minutes / 60
 
-    print 'Local time offset is %i h to UTC.' % (utcOffset_h)
+    # Note: we do not handle 1/2 h timezone offsets
+    assert(utc_offset_minutes == utc_offset_hours * 60)
+
+    print 'Local time offset is %i h to UTC.' % utc_offset_hours
 
 
 def prompt_to_open_file(filename):
@@ -88,7 +97,7 @@ def prompt_to_open_file(filename):
             # Open in excel
             #os.system('start "%s\\%s"' % (sys.path[0], filename))
             from subprocess import Popen
-            p = Popen(filename, shell=True)
+            Popen(filename, shell=True)
 
     else:
         raw_input('Press any key to continue')

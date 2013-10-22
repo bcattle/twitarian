@@ -27,5 +27,3 @@ CREDENTIALS_FILE = '.twitter_credentials'
 
 
 ## I/O
-
-

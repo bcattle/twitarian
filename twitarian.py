@@ -41,7 +41,8 @@ write_and_flush('password good.\n')
 # Connect
 write_and_flush('Connecting to twitter...')
 t = Twitter(api_version=1.1,
-            auth=OAuth(oauth_token, oauth_secret, CONSUMER_KEY, CONSUMER_SECRET))
+            auth=OAuth(oauth_token, oauth_secret,
+                       CONSUMER_KEY, CONSUMER_SECRET))
 write_and_flush('done\n')
 
 # Pull tweets and mentions
@@ -95,4 +96,3 @@ prompt_to_open_file(filename)
 #    self.user_handle
 #
 #mentioner_counter = collections.Counter()
-

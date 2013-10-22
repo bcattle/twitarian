@@ -1,5 +1,6 @@
 from datetime import datetime
-from openpyxl import  Workbook
+from openpyxl import Workbook
+
 
 def get_filename(username, extension=''):
     extension_str = '.%s' % extension if extension else ''

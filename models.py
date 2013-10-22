@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-import csv, collections, datetime
+import csv
+import collections
+import datetime
 from email.utils import parsedate_tz
 from pytz import UTC
-#from settings import *
-from ux import get_utc_offset
+from ux import get_utc_offset_hours
 from twitter import TwitterHTTPError
 
 
@@ -14,7 +15,8 @@ class BaseTweet(object):
     """
     def __repr__(self):
         # return '<Tweet "%s">' % self.text[:40].encode('ascii', 'replace')
-        return '<%s "%s">' % (self.__class__.__name__, self.text[:40].encode('ascii', 'replace'))
+        return '<%s "%s">' % (self.__class__.__name__,
+                              self.text[:40].encode('ascii', 'replace'))
 
     def _created_at_to_datetime(self, created_at):
         """
@@ -37,7 +39,8 @@ class Tweet(BaseTweet):
         self.retweets           = raw_tweet['retweet_count']
         self.favorites          = raw_tweet['favorite_count']
         self.account_followers  = raw_tweet['user']['followers_count']
-        self.created_utc, self.created_local = self._created_at_to_datetime(raw_tweet['created_at'])
+        self.created_utc, self.created_local = \
+            self._created_at_to_datetime(raw_tweet['created_at'])
 
     def to_dict(self):
         return {
@@ -57,7 +60,8 @@ class Mention(BaseTweet):
         self.retweets           = raw_mention['retweet_count']
         self.favorites          = raw_mention['favorite_count']
         self.source             = raw_mention['source']
-        self.created_utc, self.created_local = self._created_at_to_datetime(raw_mention['created_at'])
+        self.created_utc, self.created_local = \
+            self._created_at_to_datetime(raw_mention['created_at'])
         # User
         self.user_followers     = raw_mention['user']['followers_count']
         self.user_total_tweets  = raw_mention['user']['statuses_count']
@@ -137,7 +141,8 @@ class TweetList(list):
             else:
                 break
 
-        tweet_list = TweetList(name='Tweets', raw_tweets=raw_tweets, tweet_klass=Tweet)
+        tweet_list = TweetList(name='Tweets',
+                               raw_tweets=raw_tweets, tweet_klass=Tweet)
         return tweet_list
 
 
@@ -170,7 +175,8 @@ class TweetList(list):
             else:
                 break
 
-        mention_list = TweetList(name='Mentions', raw_tweets=raw_mentions, tweet_klass=Mention)
+        mention_list = TweetList(name='Mentions',
+                                 raw_tweets=raw_mentions, tweet_klass=Mention)
         return mention_list
 
 
@@ -194,7 +200,7 @@ class TweetList(list):
             if last_id:
                 params['max_id'] = last_id
 
-            # This call returns the most recent tweets of mine that were re-tweeted,
+            # This call returns the most recent tweets that were re-tweeted,
             # without specifying who actually did the retweeting
             #new_raw_retweets = twitter.statuses.retweets_of_me(**params)
 
@@ -202,7 +208,8 @@ class TweetList(list):
                 new_raw_retweets = twitter.search.tweets(**params)['statuses']         # <----
 
             except TwitterHTTPError, e:
-                print 'Twitter returned an error, this probably means we were rate-limited.'
+                print 'Twitter returned an error, this probably means ' \
+                      'we were rate-limited.'
                 print '\tThe error was: %s' % e.response_data
                 print '\tcontinuing with the data we have...'
                 break
@@ -220,10 +227,9 @@ class TweetList(list):
                     break
             else:
                 break
-
-        mention_list = TweetList(raw_retweets, Mention)
+        mention_list = TweetList(name='Re-tweets',
+                                 raw_tweets=raw_retweets, tweet_klass=Mention)
         return mention_list
-
 
     def save_output_file(self, username, file_object):
         """
@@ -238,7 +244,6 @@ class TweetList(list):
         writer.writerow([])
         writer.writerow([])
 
-
     def save_into_worksheet(self, ws):
         """
         Saves output data to am Excel workbook using OpenPyXL
@@ -251,11 +256,12 @@ class TweetList(list):
         if len(self):
             # First, write the column headers
             for index, key in enumerate(self[0].to_dict().keys()):
-                ws.cell(row = 0, column = index).value = key
+                ws.cell(row=0, column=index).value = key
 
             # Then, iterate through all the rows and write
             for row_index, row in enumerate(self):
-                for col_index, cell_value in enumerate(row.to_dict().values()):
-                    ws.cell(row = row_index + 1, column = col_index).value = cell_value
-
+                for col_index, cell_value in \
+                        enumerate(row.to_dict().values()):
+                    ws.cell(row=row_index + 1, column=col_index).value \
+                        = cell_value
         return row_index
