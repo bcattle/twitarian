@@ -48,7 +48,8 @@ write_and_flush('done\n')
 #write_and_flush('done\n')
 
 # Save to a file
-#with open('%s.csv' % OUTPUT_FILENAME, 'w') as csvfile:
+#filename = '%s.csv' % OUTPUT_FILENAME
+#with open(filename, 'w') as csvfile:
 #    tweets.save_output_file(csvfile)
 #    mentions.save_output_file(csvfile)
 
@@ -70,9 +71,31 @@ ws3 = wb.create_sheet(title='Retweets')
 #retweets.save_into_worksheet(ws3)
 
 # Save the file
-wb.save('%s.xlsx' % OUTPUT_FILENAME)
+filename = '%s.xlsx' % OUTPUT_FILENAME
+wb.save(filename)
 
 write_and_flush('done!\n')
+
+
+print 'Everything ran successfully. The data was saved to the file'
+print '\t%s' % filename
+
+# If we're in Windows, offer to open the file in Excel
+if os.name == 'nt':
+
+    print '\n Press <enter> to open this file in Excel,'
+    print 'otherwise press any other key to quit.'
+
+    import msvcrt
+    c = msvcrt.getch()
+    if c == '\r':
+        # Open in excel
+        os.system('start excel.exe "%s\\%s"' % (sys.path[0], filename))
+
+else:
+    os.system('read -s -n 1 -p "Press any key to continue..."')
+    print
+
 
 
 
