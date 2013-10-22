@@ -1,13 +1,11 @@
 #!/usr/bin/env python
 import os
 import sys
-#import logging
 from twitter import Twitter, OAuth, oauth_dance, read_token_file
 from models import TweetList
 from openpyxl import  Workbook
 from settings import *
 
-#logger = logging.getLogger(__name__)
 
 def write_and_flush(s):
     sys.stdout.write(s); sys.stdout.flush()
