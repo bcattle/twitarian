@@ -171,6 +171,60 @@ class TweetList(list):
         return mention_list
 
 
+    @staticmethod
+    def pull_manual_retweets(twitter, screenname, start_date=None):
+        """
+        Pulls "manual retweets" = those specified like "RT @comebody"
+        The theory is that these aren't included in the official
+        Twitter-returned "retweet count"
+        """
+        last_id = None
+        raw_retweets = []
+        while True:
+            params = {
+                'count': 200,
+                'q': '"RT @%s"' % screenname
+            }
+            if last_id:
+                params['max_id'] = last_id
+
+            # This call returns the most recent tweets of mine that were re-tweeted,
+            # without specifying who actually did the retweeting
+            #new_raw_retweets = twitter.statuses.retweets_of_me(**params)
+
+            try:
+                new_raw_retweets = twitter.search.tweets(**params)['statuses']         # <----
+
+                import ipdb
+                ipdb.set_trace()
+
+            except TwitterHTTPError, e:
+                print 'Twitter returned an error, this probably means we were rate-limited.'
+                print '\tThe error was: %s' % e.response_data
+                print '\tcontinuing with the data we have...'
+                break
+
+            #import ipdb
+            #ipdb.set_trace()
+
+            if not new_raw_retweets:
+                break
+            raw_retweets.extend(new_raw_retweets)
+
+            if start_date:
+                # Is the date of our last tweet < start date?
+                last_retweet = Mention(raw_retweets[-1])
+                if last_retweet.created_local > start_date:
+                    last_id = raw_retweets[-1]['id_str']
+                else:
+                    break
+            else:
+                break
+
+        mention_list = TweetList(raw_retweets, Mention)
+        return mention_list
+
+
     def save_output_file(self, file_object):
         """
         Saves to a flat CSV file, one table after the other

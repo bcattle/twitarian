@@ -40,6 +40,14 @@ write_and_flush('Pulling mentions...')
 mentions = TweetList.pull_mentions(t, START_DATE)
 write_and_flush('done\n')
 
+# This isn't working for some reason. It's returning
+# the same two results over and over again.
+# However, the real search only returns 10 results, Oct-July
+# so it's not that important. 
+
+#write_and_flush('Pulling retweets...')
+#retweets = TweetList.pull_manual_retweets(t, TWITTER_ACCOUNT, START_DATE)
+#write_and_flush('done\n')
 
 # Save to a file
 #with open('%s.csv' % OUTPUT_FILENAME, 'w') as csvfile:
