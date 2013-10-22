@@ -2,6 +2,7 @@
 import csv, collections
 from email.utils import parsedate_tz
 from pytz import UTC
+from openpyxl import Workbook
 from settings import *
 
 class BaseTweet(object):
@@ -171,9 +172,7 @@ class TweetList(list):
         Should really save this data to multiple workbooks
         or update data that already exists
 
-        See ---
-           http://scienceoss.com/write-excel-files-with-python-using-xlwt/
-           http://pythonhosted.org/openpyxl/tutorial.html
+
         """
         writer = csv.writer(file_object)
         writer.writerow(['Tweets/mentions for @%s' % TWITTER_ACCOUNT])
@@ -183,3 +182,23 @@ class TweetList(list):
             writer.writerow(tweet.to_dict().values())
         writer.writerow([])
         writer.writerow([])
+
+    def save_into_worksheet(self, ws):
+        """
+        Saves output data to am Excel workbook using OpenPyXL
+        http://pythonhosted.org/openpyxl/tutorial.html
+
+        See also ---
+           http://scienceoss.com/write-excel-files-with-python-using-xlwt/
+        """
+        # First, write the column headers
+        for index, key in enumerate(self[0].to_dict().keys()):
+            ws.cell(row = 0, column = index).value = key
+
+        # Then, iterate through all the rows and write
+        row_index = 0
+        for row_index, row in enumerate(self):
+            for col_index, cell_value in enumerate(row.to_dict().values()):
+                ws.cell(row = row_index + 1, column = col_index).value = cell_value
+
+        return row_index

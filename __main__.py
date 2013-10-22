@@ -1,10 +1,12 @@
 #!/usr/bin/env python
-import logging, os
+import os
+#import logging
 from twitter import Twitter, OAuth, oauth_dance, read_token_file
 from models import TweetList
+from openpyxl import  Workbook
 from settings import *
 
-logger = logging.getLogger(__name__)
+#logger = logging.getLogger(__name__)
 
 
 # Auth
@@ -25,9 +27,23 @@ mentions = TweetList.pull_mentions(t, START_DATE)
 
 
 # Save to a file
-with open(OUTPUT_FILE, 'w') as csvfile:
-    tweets.save_output_file(csvfile)
-    mentions.save_output_file(csvfile)
+#with open('%s.csv' % OUTPUT_FILENAME, 'w') as csvfile:
+#    tweets.save_output_file(csvfile)
+#    mentions.save_output_file(csvfile)
+
+# Save to an excel workbook
+wb = Workbook()
+# First sheet, tweets
+ws1 = wb.get_active_sheet()
+ws1.title = 'Tweets'
+tweets.save_into_worksheet(ws1)
+
+# Second sheet, mentions
+ws2 = wb.create_sheet(title='Mentions')
+mentions.save_into_worksheet(ws2)
+
+# Save the file
+wb.save('%s.xlsx' % OUTPUT_FILENAME)
 
 
 # Calculate unique mentioners

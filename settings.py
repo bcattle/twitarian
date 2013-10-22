@@ -8,7 +8,8 @@ TWITTER_ACCOUNT = 'DalbergTweet'
 LOCAL_TIME      = timezone('US/Eastern')
 
 # START_DATE      = datetime.datetime(2013, 1, 1, tzinfo=LOCAL_TIME)
-START_DATE      = datetime.datetime(2013, 4, 1, tzinfo=LOCAL_TIME)
+# START_DATE      = datetime.datetime(2013, 4, 1, tzinfo=LOCAL_TIME)
+START_DATE      = datetime.datetime(2013, 7, 1, tzinfo=LOCAL_TIME)
 
 
 ## Authentication
@@ -22,7 +23,7 @@ CREDENTIALS_FILE = '.twitter_credentials'
 
 ## I/O
 
-OUTPUT_FILE     = '%s - %s.csv' % (
+OUTPUT_FILENAME     = '%s - %s' % (
     TWITTER_ACCOUNT,
     datetime.datetime.now(tz=LOCAL_TIME).strftime('%b %d, %Y %I.%M.%S %p')
 )
