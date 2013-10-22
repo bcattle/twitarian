@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os
+import sys
 #import logging
 from twitter import Twitter, OAuth, oauth_dance, read_token_file
 from models import TweetList
@@ -8,22 +9,36 @@ from settings import *
 
 #logger = logging.getLogger(__name__)
 
+def write_and_flush(s):
+    sys.stdout.write(s); sys.stdout.flush()
+
+print '\nTwitarian, version %s' % VERSION
+print '<http://github.com/bcattle/twitarian/>'
+print 'Bryan Cattle, (c) 2013\n'
 
 # Auth
+write_and_flush('Checking your password...')
 if not os.path.exists(CREDENTIALS_FILE):
     oauth_dance('Twidarian', CONSUMER_KEY, CONSUMER_SECRET,
                 CREDENTIALS_FILE)
 oauth_token, oauth_secret = read_token_file(CREDENTIALS_FILE)
+write_and_flush('password good.\n')
 
 
 # Connect
+write_and_flush('Connecting to twitter...')
 t = Twitter(api_version=1.1,
             auth=OAuth(oauth_token, oauth_secret, CONSUMER_KEY, CONSUMER_SECRET))
-
+write_and_flush('done\n')
 
 # Pull tweets and mentions
+write_and_flush('Pulling tweets...')
 tweets = TweetList.pull_tweets_for_user(t, TWITTER_ACCOUNT, START_DATE)
+write_and_flush('done\n')
+
+write_and_flush('Pulling mentions...')
 mentions = TweetList.pull_mentions(t, START_DATE)
+write_and_flush('done\n')
 
 
 # Save to a file
@@ -32,6 +47,8 @@ mentions = TweetList.pull_mentions(t, START_DATE)
 #    mentions.save_output_file(csvfile)
 
 # Save to an excel workbook
+write_and_flush('Saving everything in an Excel file...')
+
 wb = Workbook()
 # First sheet, tweets
 ws1 = wb.get_active_sheet()
@@ -42,8 +59,15 @@ tweets.save_into_worksheet(ws1)
 ws2 = wb.create_sheet(title='Mentions')
 mentions.save_into_worksheet(ws2)
 
+# Third sheet, retweets
+ws3 = wb.create_sheet(title='Retweets')
+retweets.save_into_worksheet(ws3)
+
 # Save the file
 wb.save('%s.xlsx' % OUTPUT_FILENAME)
+
+write_and_flush('done!\n')
+
 
 
 # Calculate unique mentioners

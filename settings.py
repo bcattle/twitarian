@@ -2,6 +2,8 @@
 import datetime
 from pytz import timezone
 
+VERSION = '0.2.0'
+
 ## Settings
 
 TWITTER_ACCOUNT = 'DalbergTweet'
@@ -18,7 +20,6 @@ CONSUMER_KEY = 'du4W5e4hbaTJqGLX5U270g'
 CONSUMER_SECRET = 'wL0OvhRoIB5RrXLh3FvrEFt9e1PFsCkDVXurNx7YQc'
 
 CREDENTIALS_FILE = '.twitter_credentials'
-
 
 
 ## I/O
