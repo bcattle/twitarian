@@ -77,8 +77,8 @@ wb.save(filename)
 write_and_flush('done!\n')
 
 
-print 'Everything ran successfully. The data was saved to the file'
-print '\t%s' % filename
+print '\nEverything ran successfully. The data was saved to the file'
+print '\n\t%s\n' % filename
 
 # If we're in Windows, offer to open the file in Excel
 if os.name == 'nt':
@@ -93,8 +93,9 @@ if os.name == 'nt':
         os.system('start excel.exe "%s\\%s"' % (sys.path[0], filename))
 
 else:
-    os.system('read -s -n 1 -p "Press any key to continue..."')
-    print
+    raw_input('Press any key to continue')
+    #os.system('read -s -n 1 -p "Press any key to continue..."')
+    #print
 
 
 

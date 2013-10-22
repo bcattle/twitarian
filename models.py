@@ -23,7 +23,9 @@ class BaseTweet(object):
         """
         time_tuple = parsedate_tz(created_at)
         created_utc = datetime.datetime(*time_tuple[:6], tzinfo=UTC)
-        created_local = created_utc.astimezone(LOCAL_TIME)
+        #created_local = created_utc.astimezone(LOCAL_TIME)
+        # Not really "local" unless you're in London
+        created_local = created_utc.astimezone(UTC)
         return created_utc, created_local
 
 
