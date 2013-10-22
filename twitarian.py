@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import os
 import sys
+import datetime
 from twitter import Twitter, OAuth, oauth_dance, read_token_file
 from models import TweetList
 from openpyxl import  Workbook
@@ -13,6 +14,59 @@ def write_and_flush(s):
 print '\nTwitarian, version %s' % VERSION
 print '<http://github.com/bcattle/twitarian/>'
 print 'Bryan Cattle, (c) 2013\n'
+
+# Ask the user for their screenname
+while True:
+    twitter_account = raw_input('Please enter your twitter username without the "@" sign: ')
+    if twitter_account and twitter_account.strip()[0] != '@':
+        break
+twitter_account = twitter_account.strip()
+
+# The output filename
+OUTPUT_FILENAME     = '%s - %s' % (
+    twitter_account,
+    #datetime.datetime.now(tz=LOCAL_TIME).strftime('%b %d, %Y %I.%M.%S %p')
+    datetime.datetime.now().strftime('%b %d, %Y %I.%M.%S %p')
+)
+
+
+# Try to guess what quarter the user is interested in
+this_year = datetime.date.today().year
+quarter_start_dates = [
+    datetime.date(this_year, 1, 1),
+    datetime.date(this_year, 4, 1),
+    datetime.date(this_year, 7, 1),
+    datetime.date(this_year, 10, 1),
+]
+
+# What was the start date of the most recently ended quarter?
+last_qtr = filter(lambda x: x < datetime.date.today(), quarter_start_dates)[-1]
+
+# Allow the user to enter a different date, if desired
+print 'How far back do you want to go?'
+print 'Press <enter> for the last quarter, which started on %s' % last_qtr.strftime('%B %d')
+print 'Or enter a new date as [YYYY-MM-DD]'
+
+while True:
+    new_date = raw_input('>')
+
+    if not new_date:
+        # Accept the default
+        start_date = datetime.datetime.combine(last_qtr, datetime.datetime.min.time())
+        break
+    else:
+        # Try to parse the input
+        try:
+            start_date = datetime.datetime.strptime(new_date, '%Y-%m-%d')
+            # It worked
+            break
+        except ValueError:
+            print 'Sorry, couldn\'t understand the date "%s". Try again as [YYYY-MM-DD]' % new_date
+
+print 'Okay, pulling your tweets back to %s' % start_date.strftime('%Y-%m-%d')
+
+# Set the timezone so we can compare w/ what's returned by Twitter
+start_date = UTC.localize(start_date)
 
 # Auth
 write_and_flush('Checking your password...')
@@ -31,11 +85,11 @@ write_and_flush('done\n')
 
 # Pull tweets and mentions
 write_and_flush('Pulling tweets...')
-tweets = TweetList.pull_tweets_for_user(t, TWITTER_ACCOUNT, START_DATE)
+tweets = TweetList.pull_tweets_for_user(t, twitter_account, start_date)
 write_and_flush('done\n')
 
 write_and_flush('Pulling mentions...')
-mentions = TweetList.pull_mentions(t, START_DATE)
+mentions = TweetList.pull_mentions(t, start_date)
 write_and_flush('done\n')
 
 # This isn't working for some reason. It's returning
@@ -91,8 +145,8 @@ if os.name == 'nt':
     if c == '\r':
         # Open in excel
         #os.system('start "%s\\%s"' % (sys.path[0], filename))
-		from subprocess import Popen
-		p = Popen(filename, shell=True)
+        from subprocess import Popen
+        p = Popen(filename, shell=True)
 
 else:
     raw_input('Press any key to continue')

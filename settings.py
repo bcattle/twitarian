@@ -7,7 +7,7 @@ VERSION = '0.2.0'
 
 ## Settings
 
-TWITTER_ACCOUNT = 'DalbergTweet'
+#TWITTER_ACCOUNT = 'DalbergTweet'
 #LOCAL_TIME      = timezone('US/Eastern')
 
 # START_DATE      = datetime.datetime(2013, 1, 1, tzinfo=LOCAL_TIME)
@@ -15,7 +15,7 @@ TWITTER_ACCOUNT = 'DalbergTweet'
 #START_DATE      = datetime.datetime(2013, 7, 1, tzinfo=LOCAL_TIME)
 
 # We need to use UTC, py2exe can't handle pytz time zones
-START_DATE      = datetime.datetime(2013, 7, 1, tzinfo=UTC)
+#START_DATE      = datetime.datetime(2013, 7, 1, tzinfo=UTC)
 
 
 ## Authentication
@@ -28,8 +28,4 @@ CREDENTIALS_FILE = '.twitter_credentials'
 
 ## I/O
 
-OUTPUT_FILENAME     = '%s - %s' % (
-    TWITTER_ACCOUNT,
-    #datetime.datetime.now(tz=LOCAL_TIME).strftime('%b %d, %Y %I.%M.%S %p')
-    datetime.datetime.now().strftime('%b %d, %Y %I.%M.%S %p')
-)
+
