@@ -39,6 +39,5 @@ To open the file in Excel, press <kbd>Enter</kbd>, otherwise press any other key
 
 ## Uh oh, something went wrong
 
-You may get the bogus error that "MSVCR90.dll is Missing or Not Found". If you do, to fix the twin issues of being both
-  "missing" and "not found", you need to run a small piece of software that Microsoft wouldn't let us include with this
-   package. Download and run the small installer [here](http://www.microsoft.com/en-us/download/details.aspx?id=29).
+You may get the bogus error that "MSVCR90.dll is Missing or Not Found". If you do, you need to install a library 
+from Microsoft. Download and run the small installer [here](http://www.microsoft.com/en-us/download/details.aspx?id=29).
