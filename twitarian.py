@@ -9,6 +9,7 @@ from tweetlist import TweetList
 from ux import write_and_flush, get_screenname, get_start_date, \
     prompt_to_open_file, print_copyright
 from output import save_to_csv, save_to_excel
+from prefs import AppPreferences
 from settings import *
 
 
@@ -16,8 +17,11 @@ from settings import *
 
 print_copyright(__version__)
 
+# Load app preferences (if any)
+prefs = AppPreferences()
+
 # Ask the user for their screenname
-twitter_account = get_screenname()
+twitter_account = get_screenname(default=prefs.get('last_screenname', ''))
 
 # Ask the user for the start date
 start_date = get_start_date()
@@ -75,6 +79,10 @@ write_and_flush('done!\n')
 
 print '\nEverything ran successfully. The data was saved to the file'
 print '\n\t%s\n' % filename
+
+# Save preferences
+prefs['last_screenname'] = twitter_account
+prefs.save()
 
 prompt_to_open_file(filename)
 

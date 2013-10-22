@@ -5,3 +5,5 @@ venv/
 data/
 *.xlsx
 *.csv
+.prefs.p
+.prefs

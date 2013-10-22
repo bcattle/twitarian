@@ -14,15 +14,19 @@ def print_copyright(version):
     print 'Bryan Cattle, (c) 2013\n'
 
 
-def get_screenname():
+def get_screenname(default=''):
     """
     Asks the user for their screenname and
     returns it as a string
     """
+    default_str = ' [%s]' % default if default else ''
     while True:
         twitter_account = raw_input('Please enter your twitter username '
-                                    'without the "@" sign: ')
+                                    'without the "@" sign%s: ' % default_str)
         if twitter_account and twitter_account.strip()[0] != '@':
+            break
+        elif not twitter_account and default:
+            twitter_account = default
             break
     return twitter_account.strip()
 
