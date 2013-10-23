@@ -2,9 +2,6 @@ twitarian
 =========
 Author: Bryan Cattle [@bcattle](https://twitter.com/bcattle)
 
-License: [MIT](https://raw.github.com/bcattle/twitarian/master/LICENSE)
-
-
 Your twitter librarian. Calculates some (possibly) useful metrics.
 
 ## What does it do?
