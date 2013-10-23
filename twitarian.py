@@ -2,9 +2,8 @@
 
 __version__ = '0.2.0'
 
-import os
 from pytz import UTC
-from twitter import Twitter, OAuth, oauth_dance, read_token_file
+from twitter import Twitter, OAuth, oauth_dance
 from tweetlist import TweetList
 from ux import write_and_flush, get_screenname, get_start_date, \
     prompt_to_open_file, print_copyright
@@ -33,10 +32,22 @@ print 'Okay, pulling your tweets back to %s' % start_date.strftime('%Y-%m-%d')
 
 # Auth
 write_and_flush('Checking your password...')
-if not os.path.exists(CREDENTIALS_FILE):
-    oauth_dance('Twidarian', CONSUMER_KEY, CONSUMER_SECRET,
-                CREDENTIALS_FILE)
-oauth_token, oauth_secret = read_token_file(CREDENTIALS_FILE)
+
+credentials = prefs.get('credentials', {})
+
+if not twitter_account.lower() in credentials:
+    oauth_token, oauth_secret = \
+        oauth_dance('Twidarian', CONSUMER_KEY, CONSUMER_SECRET)
+    credentials[twitter_account.lower()] = oauth_token, oauth_secret
+    prefs['credentials'] = credentials
+
+oauth_token, oauth_secret = credentials[twitter_account.lower()]
+
+#if not os.path.exists(CREDENTIALS_FILE):
+#    oauth_dance('Twidarian', CONSUMER_KEY, CONSUMER_SECRET,
+#                CREDENTIALS_FILE)
+#oauth_token, oauth_secret = read_token_file(CREDENTIALS_FILE)
+
 write_and_flush('password good.\n')
 
 
