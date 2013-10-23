@@ -65,6 +65,15 @@ class TweetList(list):
 
         tweet_list = TweetList(name='Tweets',
                                raw_tweets=raw_tweets, tweet_klass=Tweet)
+
+        # If we only retrieved one set of results,
+        # it may have overshot our `start_date`
+        tweet_list = TweetList(
+            name=tweet_list.name,
+            processed_tweets=filter(
+                lambda x: x.created_local > start_date, tweet_list
+            )
+        )
         return tweet_list
 
 
@@ -99,6 +108,15 @@ class TweetList(list):
 
         mention_list = TweetList(name='Mentions',
                                  raw_tweets=raw_mentions, tweet_klass=Mention)
+
+        # If we only retrieved one set of results,
+        # it may have overshot our `start_date`
+        mention_list = TweetList(
+            name=mention_list.name,
+            processed_tweets=filter(
+                lambda x: x.created_local > start_date, mention_list
+            )
+        )
         return mention_list
 
 

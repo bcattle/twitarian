@@ -2,7 +2,6 @@
 
 __version__ = '0.2.1'
 
-from pytz import UTC
 from twitter import Twitter, OAuth, oauth_dance
 from tweetlist import TweetList
 from ux import write_and_flush, get_screenname, get_start_date, \
@@ -24,8 +23,6 @@ twitter_account = get_screenname(default=prefs.get('last_screenname', ''))
 
 # Ask the user for the start date
 start_date = get_start_date()
-# Set the timezone so we can compare w/ what's returned by Twitter
-start_date = UTC.localize(start_date)
 
 print 'Okay, pulling your tweets back to %s' % start_date.strftime('%Y-%m-%d')
 

@@ -1,6 +1,7 @@
 import sys
 import os
 import datetime
+from dateutil.tz import tzlocal
 
 
 def write_and_flush(s):
@@ -19,7 +20,7 @@ def get_screenname(default=''):
     Asks the user for their screenname and
     returns it as a string
     """
-    default_str = ' [%s]' % default if default else ''
+    default_str = ' or press enter to use [%s]' % default if default else ''
     while True:
         twitter_account = raw_input('Please enter your twitter username '
                                     'without the "@" sign%s: ' % default_str)
@@ -69,7 +70,8 @@ def get_start_date():
             except ValueError:
                 print 'Sorry, couldn\'t understand the date "%s". ' \
                       'Try again as [YYYY-MM-DD]' % new_date
-
+    # Assume the user wants the date in their local timezone
+    start_date = start_date.replace(tzinfo=tzlocal())
     return start_date
 
 
