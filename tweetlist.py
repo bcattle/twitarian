@@ -48,7 +48,16 @@ class TweetList(list):
             if last_id:
                 params['max_id'] = last_id
 
-            new_raw_tweets = twitter.statuses.user_timeline(**params)           # <----
+            try:
+                new_raw_tweets = twitter.statuses.user_timeline(**params)           # <----
+
+            except TwitterHTTPError, e:
+                print 'Twitter returned an error, this probably means ' \
+                      'we were rate-limited.'
+                print '\tThe error was: %s' % e.response_data
+                print '\tcontinuing with the data we have...'
+                break
+
             if not new_raw_tweets:
                 break
             raw_tweets.extend(new_raw_tweets)
@@ -93,7 +102,16 @@ class TweetList(list):
             if last_id:
                 params['max_id'] = last_id
 
-            new_raw_mentions = twitter.statuses.mentions_timeline(**params)         # <----
+            try:
+                new_raw_mentions = twitter.statuses.mentions_timeline(**params)         # <----
+
+            except TwitterHTTPError, e:
+                print 'Twitter returned an error, this probably means ' \
+                      'we were rate-limited.'
+                print '\tThe error was: %s' % e.response_data
+                print '\tcontinuing with the data we have...'
+                break
+
             if not new_raw_mentions:
                 break
             raw_mentions.extend(new_raw_mentions)
