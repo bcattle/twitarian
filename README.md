@@ -3,16 +3,16 @@ twitarian
 
 Your twitter librarian. Calculates some (possibly) useful metrics.
 
-## Output
+## What does it do?
 
 This app pulls your tweets and the tweets of people who have mentioned you, over a time interval that you specify.
-It dumps this data into Excel, and calculates some metrics for you, like ----
+It dumps this data into Excel, and calculates some metrics for you, like
 - Number of re-tweets
 - Number of favorites
 - Number of times others mentioned you
 - Your most-popular tweets
 - Who talks about you the most
-- Your "Engagement"
+- A measurement of your "Engagement"
 
 The app generates an Excel 2007 file
 
@@ -74,7 +74,14 @@ from Microsoft. Download and run the installer [here](http://www.microsoft.com/e
 
 ## How to use on a Mac
 
-Don't download the binaries, download the source. Open a command prompt and install the needed libraries with
+Go to the [releases](https://github.com/bcattle/twitarian/releases) page. Don't download the binaries, download the
+source code tar.gz. Open a command prompt and unzip
+
+```
+% tar -zxvf 1.0.0.tar.gz
+```
+
+Install the needed libraries with
 
 ```
 % sudo pip install -r requirements.txt
