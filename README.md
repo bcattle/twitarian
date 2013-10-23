@@ -95,3 +95,6 @@ Then, simply run the script
 ```
 
 After that, the process is the same as above. Enter username, enter date of interest, authorize... and profit.
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/bcattle/twitarian/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
