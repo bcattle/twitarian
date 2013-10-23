@@ -10,11 +10,18 @@ class TweetList(list):
     Holds both tweets *and* mentions (which are also tweets)
     """
 
-    def __init__(self, name, raw_tweets, tweet_klass):
+    def __init__(self, name, raw_tweets=None, tweet_klass=None,
+                 processed_tweets=None):
+        assert raw_tweets and tweet_klass or processed_tweets
+
         super(TweetList, self).__init__()
         self.name = name.capitalize()
-        for raw_tweet in raw_tweets:
-            self.append(tweet_klass(raw_tweet))
+
+        if raw_tweets:
+            for raw_tweet in raw_tweets:
+                self.append(tweet_klass(raw_tweet))
+        else:
+            self.extend(processed_tweets)
         self.tweets_by_day = None
 
     def get_tweets_by_day(self):
@@ -102,7 +109,7 @@ class TweetList(list):
         The theory is that these aren't included in the official
         Twitter-returned "retweet count"
 
-        This function isn't that useful, because the search results are sparse
+        --->> This function isn't that useful, because the search results are sparse
         Better data is obtained by filtering the "mentions" by "RT @username"
         """
         last_id = None
@@ -146,6 +153,19 @@ class TweetList(list):
                                  raw_tweets=raw_retweets, tweet_klass=Mention)
         return mention_list
 
+
+    def extract_retweets(self, username):
+        """
+        Returns a new TweetList consisting of mentions
+        of the form "RT @username", pulled from the current TweetList
+        """
+        retweet_str = ('RT @%s' % username).lower()
+        retweets = filter(lambda x: retweet_str in x.text.lower(), self)
+        retweet_list = TweetList(name='Re-tweets',
+                                 processed_tweets=retweets)
+        return retweet_list
+
+
     def save_output_file(self, username, file_object):
         """
         Saves to a flat CSV file, one table after the other
@@ -183,12 +203,6 @@ class TweetList(list):
                         = cell_value
 
             # Set the column widths
-            # Because we're feeling sporty,
-            # use a best-fit line to calculate desired width
-
-            # y = mx + b
-            #m_px_per_char = 6.792857143
-            #b_px = 9.657142857
             for col_index in range(len(self[0].to_dict())):
                 # Get the max value in the column
                 # Start with the name
@@ -203,9 +217,7 @@ class TweetList(list):
                     if cell_len > col_max_chars:
                         col_max_chars = cell_len
 
-                # Set the column width
-                #col_width_px = col_max_chars * m_px_per_char + b_px
-                #ws.column_dimensions[get_column_letter(col_index + 1)].width = col_width_px
+                # Set the width
                 ws.column_dimensions[get_column_letter(col_index + 1)].width = col_max_chars
 
         return row_index

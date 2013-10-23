@@ -74,17 +74,31 @@ write_and_flush('done\n')
 #retweets = TweetList.pull_manual_retweets(t, TWITTER_ACCOUNT, START_DATE)
 #write_and_flush('done\n')
 
+# INTERMEDIATE CALCULATIONS
+
+write_and_flush('Analyzing the data...')
+
+# Pull re-tweets out of the mentions
+re_tweets = mentions.extract_retweets(twitter_account)
+
+write_and_flush('done\n')
+
+
 
 # DATA OUTPUT
 
+all_data = [
+    tweets, mentions, re_tweets
+]
+
 # Save to a csv file
 #filename = save_to_csv(username=twitter_account,
-#                       tweet_lists=[tweets, mentions])
+#                       tweet_lists=all_data)
 
 # Save to an excel workbook
 write_and_flush('Saving everything in an Excel file...')
 filename = save_to_excel(username=twitter_account,
-                         tweet_lists=[tweets, mentions])
+                         tweet_lists=all_data)
 write_and_flush('done!\n')
 
 
