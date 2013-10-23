@@ -73,21 +73,6 @@ def get_start_date():
     return start_date
 
 
-def get_utc_offset_hours():
-    """
-    We want to show the user times in their local timezone,
-    Twitter returns UTC - figure out what their offset is to this
-    """
-    utc_offset = datetime.datetime.now() - datetime.datetime.tcnow()
-    utc_offset_minutes = int(round(utc_offset.total_seconds())) / 60
-    utc_offset_hours = utc_offset_minutes / 60
-
-    # Note: we do not handle 1/2 h timezone offsets
-    assert(utc_offset_minutes == utc_offset_hours * 60)
-
-    print 'Local time offset is %i h to UTC.' % utc_offset_hours
-
-
 def prompt_to_open_file(filename):
     # If we're in Windows, offer to open the file in Excel
     if os.name == 'nt':

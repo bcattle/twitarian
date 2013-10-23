@@ -3,7 +3,7 @@ import collections
 import datetime
 from email.utils import parsedate_tz
 from pytz import UTC
-from ux import get_utc_offset_hours
+from dateutil.tz import tzlocal
 
 
 class BaseTweet(object):
@@ -23,9 +23,7 @@ class BaseTweet(object):
         """
         time_tuple = parsedate_tz(created_at)
         created_utc = datetime.datetime(*time_tuple[:6], tzinfo=UTC)
-        #created_local = created_utc.astimezone(LOCAL_TIME)
-        # Not really "local" unless you're in London
-        created_local = created_utc.astimezone(UTC)
+        created_local = created_utc.astimezone(tz=tzlocal())
         return created_utc, created_local
 
 
