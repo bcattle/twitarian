@@ -1,5 +1,8 @@
 twitarian
 =========
+Author: Bryan Cattle [@bcattle](https://twitter.com/bcattle)
+License: [MIT](https://raw.github.com/bcattle/twitarian/master/LICENSE)
+
 
 Your twitter librarian. Calculates some (possibly) useful metrics.
 
@@ -32,7 +35,7 @@ Begin by entering your username.
 ![Screenshot: Please enter start date](https://raw.github.com/bcattle/twitarian/master/doc/how-to-1.png)
 
 Next, you need to tell the app how far back to analyze. If you have a lot of tweets, it can be slow to process them all.
-THe app guesses that you might want to do a quarterly tally, and offers a suggested date. You can override it with a date
+The app guesses that you might want to do a quarterly tally, and offers a suggested date. You can override it with a date
 of your choice, or just hit <kbd>Enter</kbd> for the default.
 
 ![Screenshot: Waiting for PIN](https://raw.github.com/bcattle/twitarian/master/doc/how-to-2.png)
@@ -40,11 +43,11 @@ of your choice, or just hit <kbd>Enter</kbd> for the default.
 Now you need to tell the app how to access your Twitter account. The app needs to do this because only you are allowed
 to see a list of who has mentioned you.
 
-As you can see, it is waiting for you to enter a PIN. The way this works is that you need to give this app ("Twitarian")
+As you can see, it is waiting for you to enter a PIN. The way this works is that you need to give Twitarian
 permission to access Twitter on your behalf. The way you do this is by visiting a page on [twitter.com](http://twitter.com/)
 in your web browser and getting a PIN that lets the app to access your tweets.
 
-> IMPORTANT: The account you authorize with Twitter *must be the same account* you enter into Twitarian when it asks for
+> IMPORTANT: The account you authorize with Twitter *must be the same account* you entered into Twitarian when it asked for
 your username. Otherwise the app won't know on whose behalf it should be working!
 
 The app should also open a web browser with this screen:
@@ -93,4 +96,4 @@ Then, simply run the script
 % python twitarian.py
 ```
 
-After that, the process is the same as above. Enter username, enter date of interest, authorize, and profit.
+After that, the process is the same as above. Enter username, enter date of interest, authorize... and profit.
