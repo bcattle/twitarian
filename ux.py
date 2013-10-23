@@ -14,6 +14,9 @@ def print_copyright(version):
     print '<http://github.com/bcattle/twitarian/>'
     print 'Bryan Cattle, (c) 2013\n'
 
+    print 'Welcome, this app will download your tweets and mentions'
+    print 'and calculate some (hopefully) useful statistics for you.\n'
+
 
 def get_screenname(default=''):
     """
@@ -22,7 +25,7 @@ def get_screenname(default=''):
     """
     default_str = ' or press enter to use [%s]' % default if default else ''
     while True:
-        twitter_account = raw_input('Please enter your twitter username '
+        twitter_account = raw_input('To get started, please enter your twitter username '
                                     'without the "@" sign%s: ' % default_str)
         if twitter_account and twitter_account.strip()[0] != '@':
             break
