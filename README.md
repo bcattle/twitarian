@@ -7,7 +7,7 @@ Outputs an Excel 2007 file
 
 ## How to use on Windows
 
-1. Download the program. Click the "Download ZIP" button to the right
+1. Download the latest release of the program from [this page](https://github.com/bcattle/twitarian/releases). Click the green button to get Windows binaries. 
 2. Save the zip file somewhere and open it
 3. Go in the `dist/` folder and run `twitarian.exe`. You should see:
 
