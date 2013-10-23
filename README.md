@@ -17,7 +17,9 @@ As you can see, it is waiting for you to enter a PIN. The way this works is that
 permission to access Twitter on your behalf. This is mainly so it can pull a list of people who have mentioned you -
 users are only able to see their *own* mentions.
 
-The way you do this is by visiting a page on `twitter.com` and authorizing the app to access your tweets.
+The way you do this is by visiting a page on [twitter.com](http://twitter.com/) and authorizing the app to access your tweets.
+
+> IMPORTANT: The account you authorize with Twitter *must be the same account* you enter into Twitarian when it asks for your username. Otherwise the app won't know on whose behalf it should be working!
 
 The app should also open a web browser with this screen:
 
