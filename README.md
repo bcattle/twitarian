@@ -93,3 +93,4 @@ Then, simply run the script
 % python twitarian.py
 ```
 
+After that, the process is the same as above. Enter username, enter date of interest, authorize, and profit.
