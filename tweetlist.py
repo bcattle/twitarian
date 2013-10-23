@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import collections
-from models import Tweet, Mention
+from models import Tweet, Mention, Mentioner
 from twitter import TwitterHTTPError
 
 
@@ -63,7 +63,7 @@ class TweetList(list):
             else:
                 break
 
-        tweet_list = TweetList(name='Tweets',
+        tweet_list = TweetList(name='Tweets, chronological',
                                raw_tweets=raw_tweets, tweet_klass=Tweet)
 
         # If we only retrieved one set of results,
@@ -74,6 +74,8 @@ class TweetList(list):
                 lambda x: x.created_local > start_date, tweet_list
             )
         )
+        # Sort by time created, descending
+        tweet_list.sort(key=lambda x: x.created_local, reverse=True)
         return tweet_list
 
 
@@ -117,6 +119,8 @@ class TweetList(list):
                 lambda x: x.created_local > start_date, mention_list
             )
         )
+        # Sort by time created, descending
+        mention_list.sort(key=lambda x: x.created_local, reverse=True)
         return mention_list
 
 
@@ -184,6 +188,64 @@ class TweetList(list):
         return retweet_list
 
 
+    def extract_most_retweeted(self):
+        """
+        Returns a new TweetList consisting of all tweets
+        that were re-tweeted, in order of popularity
+        """
+        most_retweeted = filter(lambda x: x.retweets > 0, self)
+        most_retweeted_list = TweetList(name='Tweets, most re-tweeted',
+                                        processed_tweets=most_retweeted)
+        most_retweeted_list.sort(key=lambda x: -x.retweets)
+        return most_retweeted_list
+
+
+    def extract_most_favorited(self):
+        """
+        Returns a new TweetList consisting of all tweets
+        that were favorited, in order of popularity
+        """
+        most_favorited = filter(lambda x: x.favorites > 0, self)
+        most_favorited_list = TweetList(name='Tweets, most favorited',
+                                        processed_tweets=most_favorited)
+        most_favorited_list.sort(key=lambda x: -x.favorites)
+        return most_favorited_list
+
+
+    def extract_unique_mentioners(self, username):
+        """
+        Returns a new TweetList with all the individuals
+        who mentioned you, sorted by how many times they did
+        and their number of followers
+        """
+        # Pull out the column of mentioning usernames and count it
+        mention_counter = collections.Counter(
+            [mention.user_handle for mention in self]
+        )
+
+        # Make a mapping from username to tweet, so we can get user's info
+        mentioning_users_by_username = {
+            mention.user_handle: mention for mention in self
+        }
+
+        # Make a list of /Mentioners/ from the above
+        top_mentioners = [
+            Mentioner(mention_count[1],
+                      mentioning_users_by_username[mention_count[0]],
+                      username)
+            for mention_count in mention_counter.most_common()
+        ]
+
+        # Make the new TweetList
+        mentioner_list = TweetList(name='Who mentioned you',
+                                   processed_tweets=top_mentioners)
+
+        # Already sorted by # mentiones, also want to sort by # followers
+        mentioner_list.sort(key=lambda x: (-x.mention_count, -x.user_followers))
+
+        return mentioner_list
+
+
     def save_output_file(self, username, file_object):
         """
         Saves to a flat CSV file, one table after the other
@@ -197,6 +259,7 @@ class TweetList(list):
             writer.writerow(tweet.to_dict().values())
         writer.writerow([])
         writer.writerow([])
+
 
     def save_into_worksheet(self, ws):
         """
@@ -236,6 +299,6 @@ class TweetList(list):
                         col_max_chars = cell_len
 
                 # Set the width
-                ws.column_dimensions[get_column_letter(col_index + 1)].width = col_max_chars
+                ws.column_dimensions[get_column_letter(col_index + 1)].width = col_max_chars * 1.1
 
         return row_index

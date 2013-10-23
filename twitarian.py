@@ -71,12 +71,22 @@ write_and_flush('done\n')
 #retweets = TweetList.pull_manual_retweets(t, TWITTER_ACCOUNT, START_DATE)
 #write_and_flush('done\n')
 
+
 # INTERMEDIATE CALCULATIONS
 
 write_and_flush('Analyzing the data...')
 
 # Pull re-tweets out of the mentions
 re_tweets = mentions.extract_retweets(twitter_account)
+
+# Pull most-re-tweeted
+most_re_tweeted = tweets.extract_most_retweeted()
+
+# Pull most-favorited
+most_favorited = tweets.extract_most_favorited()
+
+# Pull unique mentioners
+top_mentioners = mentions.extract_unique_mentioners(twitter_account)
 
 write_and_flush('done\n')
 
@@ -85,7 +95,8 @@ write_and_flush('done\n')
 # DATA OUTPUT
 
 all_data = [
-    tweets, mentions, re_tweets
+    tweets, most_re_tweeted, most_favorited, re_tweets,
+    mentions, top_mentioners
 ]
 
 # Save to a csv file
@@ -109,20 +120,3 @@ prefs.save()
 prompt_to_open_file(filename)
 
 
-
-# Calculate unique mentioners
-#mention_usernames = []
-#mention_user_by_username = {}
-#for mention in mentions:
-#    mention_usernames.append(mention.user_handle)
-#    mention_user_by_username[mention.user_handle] = {
-#        'followers':
-#        'total_tweets':
-#    }
-#    self.user_followers     = raw_mention['user']['followers_count']
-#    self.user_total_tweets  = raw_mention['user']['statuses_count']
-#    self.location           = raw_mention['user']['location']
-#    self.user_name          = raw_mention['user']['name']
-#    self.user_handle
-#
-#mentioner_counter = collections.Counter()

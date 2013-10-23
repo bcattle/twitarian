@@ -81,3 +81,29 @@ class Mention(BaseTweet):
             ('Followers',    self.user_followers),
             ('Total tweets', self.user_total_tweets),
         ])
+
+
+class Mentioner(BaseTweet):
+    def __init__(self, mention_count, processed_mention, username_mentioned):
+        self.mention_count = mention_count
+        self.username_mentioned = username_mentioned
+        fields = ['user_handle', 'user_name', 'location',
+                  'user_followers', 'user_total_tweets']
+        for field in fields:
+            setattr(self, field, getattr(processed_mention, field))
+
+    def __repr__(self):
+         return '<Mentioner "%s", %d>' % \
+                (self.user_handle[:40].encode('ascii', 'replace'),
+                 self.mention_count)
+
+    def to_dict(self):
+        return collections.OrderedDict([
+            ('Times mentioning %s' %
+             self.username_mentioned, self.mention_count),
+            ('User',         u'@%s' % self.user_handle.encode('utf-8')),
+            ('Name',         self.user_name.encode('utf-8')),
+            ('Location',     self.location.encode('utf-8')),
+            ('Followers',    self.user_followers),
+            ('Total tweets', self.user_total_tweets),
+        ])
