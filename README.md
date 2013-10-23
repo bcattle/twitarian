@@ -1,6 +1,7 @@
 twitarian
 =========
 Author: Bryan Cattle [@bcattle](https://twitter.com/bcattle)
+
 License: [MIT](https://raw.github.com/bcattle/twitarian/master/LICENSE)
 
 
