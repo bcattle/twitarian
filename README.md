@@ -49,11 +49,11 @@ your username. Otherwise the app won't know on whose behalf it should be working
 
 The app should also open a web browser with this screen:
 
-![Screenshot: Web browser](https://raw.github.com/bcattle/twitarian/master/img/auth1.png)
+![Screenshot: Web browser](https://raw.github.com/bcattle/twitarian/master/doc/auth1.png)
 
 Click "Authorize" and you should see
 
-![Screenshot: Web browser with PIN](https://raw.github.com/bcattle/twitarian/master/img/auth2.png)
+![Screenshot: Web browser with PIN](https://raw.github.com/bcattle/twitarian/master/doc/auth2.png)
 
 Go back to the command prompt and type this code in. Press <kbd>Enter</kbd>, and presto! the app should run:
 
@@ -74,6 +74,15 @@ from Microsoft. Download and run the installer [here](http://www.microsoft.com/e
 
 ## How to use on a Mac
 
+Don't download the binaries, download the source. Open a command prompt and install the needed libraries with
 
+```
+% sudo pip install -r requirements.txt
+```
 
-## How to use on Windows
+Then, simply run the script
+
+```
+% python twitarian.py
+```
+
