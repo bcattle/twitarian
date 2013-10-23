@@ -168,6 +168,7 @@ class TweetList(list):
         See also ---
            http://scienceoss.com/write-excel-files-with-python-using-xlwt/
         """
+        from openpyxl.cell import get_column_letter
         row_index = 0
         if len(self):
             # First, write the column headers
@@ -180,4 +181,31 @@ class TweetList(list):
                         enumerate(row.to_dict().values()):
                     ws.cell(row=row_index + 1, column=col_index).value \
                         = cell_value
+
+            # Set the column widths
+            # Because we're feeling sporty,
+            # use a best-fit line to calculate desired width
+
+            # y = mx + b
+            #m_px_per_char = 6.792857143
+            #b_px = 9.657142857
+            for col_index in range(len(self[0].to_dict())):
+                # Get the max value in the column
+                # Start with the name
+                col_name = self[0].to_dict().keys()[col_index]
+                col_max_chars = len(col_name)
+                for row_index in range(len(self)):
+                    cell_len = len(
+                        unicode(
+                            ws.cell(row=row_index + 1, column=col_index).value
+                        ).encode('ascii', 'replace')
+                    )
+                    if cell_len > col_max_chars:
+                        col_max_chars = cell_len
+
+                # Set the column width
+                #col_width_px = col_max_chars * m_px_per_char + b_px
+                #ws.column_dimensions[get_column_letter(col_index + 1)].width = col_width_px
+                ws.column_dimensions[get_column_letter(col_index + 1)].width = col_max_chars
+
         return row_index
