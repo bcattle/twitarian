@@ -1,12 +1,15 @@
 #!/usr/bin/env python
+from openpyxl import Workbook
 
 __version__ = '0.2.1'
 
+import datetime
 from twitter import Twitter, OAuth, oauth_dance
 from tweetlist import TweetList
 from ux import write_and_flush, get_screenname, get_start_date, \
     prompt_to_open_file, print_copyright
-from output import save_to_csv, save_to_excel
+from output import save_to_csv, write_to_workbook, get_filename, \
+    write_engagement_report
 from prefs import AppPreferences
 from settings import *
 
@@ -105,8 +108,18 @@ all_data = [
 
 # Save to an excel workbook
 write_and_flush('Saving everything in an Excel file...')
-filename = save_to_excel(username=twitter_account,
-                         tweet_lists=all_data)
+
+wb = Workbook()
+write_to_workbook(wb, tweet_lists=all_data)
+
+write_engagement_report(wb, twitter_account, start_date, datetime.date.today(),
+                        tweets[0].account_followers,
+                        tweets.name, mentions.name)
+
+# Save the file
+filename = get_filename(twitter_account, 'xlsx')
+wb.save(filename)
+
 write_and_flush('done!\n')
 
 
